@@ -592,6 +592,7 @@ class Install(install_misc.InstallBase):
         # This will be left in place on the installed system.
         tf = self.target_file('etc/apt/apt.conf.d/00trustcdrom')
         with open(tf, 'w') as apt_conf_tc:
+            os.chmod(tf, 0o644)
             print('APT::Authentication::TrustCDROM "true";', file=apt_conf_tc)
 
         # Avoid clock skew causing gpg verification issues.
