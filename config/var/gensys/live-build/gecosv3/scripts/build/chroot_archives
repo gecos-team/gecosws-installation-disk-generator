@@ -893,6 +893,8 @@ EOF
 		chroot chroot gconftool-2 --direct --config-source   xml:readwrite:/etc/gconf/gconf.xml.defaults  --set --type boolean /apps/gksu/sudo-mode true
 		chroot chroot gconftool-2 --set --type boolean /apps/gksu/sudo-mode true
 
+		# Create default /etc/machine-id
+		chroot chroot dbus-uuidgen > chroot/etc/machine-id
 
 		# Cleaning apt package cache
 		rm -rf chroot/var/cache/apt
