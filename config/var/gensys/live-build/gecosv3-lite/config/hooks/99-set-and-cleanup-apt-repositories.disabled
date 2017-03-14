@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rm /etc/apt/sources.list.d/*
+
+cat > /etc/apt/sources.list <<EOF
+deb http://v3.gecos.guadalinex.org/ubuntu   xenial             main restricted universe multiverse
+deb http://v3.gecos.guadalinex.org/ubuntu   xenial-updates     main restricted universe multiverse
+deb http://v3.gecos.guadalinex.org/ubuntu   xenial-security    main restricted universe multiverse
+deb http://v3.gecos.guadalinex.org/ubuntu   xenial-backports   main restricted universe multiverse
+
+deb http://v3.gecos.guadalinex.org/mint     sarah                main upstream import backport
+
+deb http://v3.gecos.guadalinex.org/gecos    v3                  main 
+EOF
