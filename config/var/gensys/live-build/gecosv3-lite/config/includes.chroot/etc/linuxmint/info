@@ -1,11 +1,11 @@
 RELEASE=16.04
 DISTRIB_ID=Ubuntu
 CODENAME=xenial
-EDITION="Cinnamon 64-bit"
-DESCRIPTION="GECOS V3"
+EDITION="Cinnamon 32-bit"
+DESCRIPTION="GECOS V3 Lite"
 DESKTOP=Cinnamon
 TOOLKIT=GTK
 NEW_FEATURES_URL=http://www.guadalinex.org
 RELEASE_NOTES_URL=http://www.guadalinex.org
 USER_GUIDE_URL=http://www.guadalinex.org
-GRUB_TITLE=GECOS V3 64bits
+GRUB_TITLE=GECOS V3 Lite 32bits
