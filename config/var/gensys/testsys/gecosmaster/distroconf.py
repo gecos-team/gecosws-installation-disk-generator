@@ -59,9 +59,12 @@ metapkgs_gecos = [
      "gecosws-system-conf",
      "gecosws-xdg-ruby",
      "gecosws-chef-notifier-cinnamon",
+     "gecosws-repository-compatibility",
+     "gecosws-certificates-locale",
+     "ca-certificates-es",
 #     "gecosws-chef-snitch",
      "java-nss-fix",
-   
+     "cups-ad-fix"   
 ]
 
 metapkgs = [
