@@ -143,7 +143,7 @@ class FreightAddGecos(ShellCommand):
     command = ["sh", "-c",\
         "freight add -c /etc/freight-gecos.conf %(package)s apt/%(codename)s;"  \
             %  {'codename': codename_gecos,\
-                'package': '../*deb'}]
+                'package': '../*.deb'}]
 
     def __init__(self, **kwargs):
         ShellCommand.__init__(self, **kwargs)

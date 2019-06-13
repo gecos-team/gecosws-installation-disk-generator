@@ -1,4 +1,0 @@
-#!/bin/bash
-
-rm -fr /etc/skel/.mozilla
-rm -fr /etc/skel/.config

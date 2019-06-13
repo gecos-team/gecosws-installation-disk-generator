@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#rm /etc/apt/sources.list.d/*
-
-cat > /etc/apt/sources.list <<EOF
-#Official repositories are located into sources.list.d folder
-EOF
