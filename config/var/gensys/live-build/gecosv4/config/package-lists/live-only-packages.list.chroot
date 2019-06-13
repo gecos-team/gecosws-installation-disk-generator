@@ -6,4 +6,4 @@ ubiquity-frontend-gtk
 ubiquity-ubuntu-artwork
 gecosws-ubiquity
 gparted
-gnome-settings-daemon
+#gnome-settings-daemon

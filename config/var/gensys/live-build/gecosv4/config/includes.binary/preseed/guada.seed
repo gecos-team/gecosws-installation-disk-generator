@@ -31,8 +31,8 @@ ubiquity countrychooser/country-name string Spain
 ubiquity tzconfig/gmt boolean false
 ubiquity time/zone select Europe/Madrid
 
-ubiquity cdrom/codename string trusty
-ubiquity mirror/codename string trusty
+ubiquity cdrom/codename string bionic
+ubiquity mirror/codename string bionic
 
 ubiquity ubiquity/online note
 ubiquity ubiquity/summary note

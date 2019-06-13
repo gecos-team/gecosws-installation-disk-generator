@@ -494,9 +494,9 @@ def get_release():
         except:
             syslog.syslog(syslog.LOG_ERR, 'Unable to determine the release.')
 
-        # DEFAULT TO GECOS V3
+        # DEFAULT TO GECOS V4
         if not get_release.release_info:
-            get_release.release_info = ReleaseInfo(name='GECOS', version='V3')
+            get_release.release_info = ReleaseInfo(name='GECOS', version='V4')
     return get_release.release_info
 
 get_release.release_info = None

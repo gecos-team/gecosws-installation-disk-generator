@@ -1,0 +1,10 @@
+[Image]
+Architecture: amd64
+Archive-Areas: main restricted universe multiverse
+Distribution: bionic
+Mirror-Bootstrap: http://v4.gecos.guadalinex.org/ubuntu
+
+[FIXME]
+Configuration-Version: 1:20170213
+Name: live-image
+Type: iso-hybrid

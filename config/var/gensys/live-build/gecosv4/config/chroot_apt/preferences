@@ -1,0 +1,4 @@
+Package: firefox
+Pin: release n=v4
+Pin-Priority: 900
+
