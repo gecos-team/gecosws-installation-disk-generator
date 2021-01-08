@@ -161,7 +161,7 @@ class RemoveDebs(ShellCommand):
 class FreightCacheGecos(ShellCommand):
     name = "FreightCacheGecos"
     description = [name]
-    command = ["sh", "-c","rm -f /var/gensys/deb-repositories/gecos/dists/%(codename)s; freight cache -c /etc/freight-gecos.conf -p /var/gensys/repo.key" \
+    command = ["sh", "-c","rm -f /var/gensys/deb-repositories/gecos/dists/%(codename)s; freight cache -c /etc/freight-gecos.conf -p /var/gensys/gpg_passphrase" \
             % {'codename': codename_gecos}]
 
 

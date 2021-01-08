@@ -1,10 +1,10 @@
 
 import os
 
+from buildbot_worker.bot import Worker
 from twisted.application import service
-from buildslave.bot import BuildSlave
 
-basedir = r'/var/gensys/testsys/gensysbot'
+basedir = '/var/gensys/testsys/gensysbot'
 rotateLength = 10000000
 maxRotatedFiles = 10
 
@@ -13,30 +13,30 @@ if basedir == '.':
     import os.path
     basedir = os.path.abspath(os.path.dirname(__file__))
 
-# note: this line is matched against to check that this is a buildslave
+# note: this line is matched against to check that this is a worker
 # directory; do not edit it.
-application = service.Application('buildslave')
+application = service.Application('buildbot-worker')
 
-try:
-  from twisted.python.logfile import LogFile
-  from twisted.python.log import ILogObserver, FileLogObserver
-  logfile = LogFile.fromFullPath(os.path.join(basedir, "twistd.log"), rotateLength=rotateLength,
-                                 maxRotatedFiles=maxRotatedFiles)
-  application.setComponent(ILogObserver, FileLogObserver(logfile).emit)
-except ImportError:
-  # probably not yet twisted 8.2.0 and beyond, can't set log yet
-  pass
+from twisted.python.logfile import LogFile
+from twisted.python.log import ILogObserver, FileLogObserver
+logfile = LogFile.fromFullPath(
+    os.path.join(basedir, "twistd.log"), rotateLength=rotateLength,
+    maxRotatedFiles=maxRotatedFiles)
+application.setComponent(ILogObserver, FileLogObserver(logfile).emit)
 
 buildmaster_host = 'localhost'
 port = 9989
-slavename = 'gensysbot'
+workername = 'gensysbot'
 passwd = 'gensysbot'
 keepalive = 600
-usepty = 0
-umask = 002
+umask = None
 maxdelay = 300
+numcpus = None
+allow_shutdown = None
+maxretries = None
 
-s = BuildSlave(buildmaster_host, port, slavename, passwd, basedir,
-               keepalive, usepty, umask=umask, maxdelay=maxdelay)
+s = Worker(buildmaster_host, port, workername, passwd, basedir,
+           keepalive, umask=umask, maxdelay=maxdelay,
+           numcpus=numcpus, allow_shutdown=allow_shutdown,
+           maxRetries=maxretries)
 s.setServiceParent(application)
-

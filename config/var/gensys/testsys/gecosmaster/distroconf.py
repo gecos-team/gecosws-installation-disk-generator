@@ -44,7 +44,6 @@ metapkgs_gecos = [
      "gecosws-artwork-common",
      "gecosws-fonts",
      "gecosws-plymouth-theme",
-     "gecos-agent",
      "cups-ad-fix"   
 ]
 
@@ -62,12 +61,12 @@ apps = [
 halt_on_lintian_error = False
 
 # Script live-build
-livebuild_gecos = "sudo /var/gensys/live-build/gecosv4/buildgecos.sh"
-livebuild_gecos_lite = "sudo /var/gensys/live-build/gecosv4-lite/buildgecoslite.sh"
+livebuild_gecos = "sudo /var/gensys/live-build/gecosv5/buildgecos.sh"
+livebuild_gecos_lite = "sudo /var/gensys/live-build/gecosv5-lite/buildgecoslite.sh"
 
 # Codename of repository
 
-codename_gecos = "v4"
+codename_gecos = "v5"
 
 # Pdebuild custom commands
 pdebuild = "pdebuild --configfile /var/gensys/.pbuilderrc"
@@ -75,8 +74,8 @@ pdebuild = "pdebuild --configfile /var/gensys/.pbuilderrc"
 # Path of own repository
 repo_dir_gecos = "/var/gensys/deb-repositories/gecos"
 
-rawimage_gecos = "/var/gensys/live-build/gecosv4/binary.hybrid.iso"
-rawimage_gecos_lite = "/var/gensys/live-build/gecosv4-lite/binary.hybrid.iso"
+rawimage_gecos = "/var/gensys/live-build/gecosv5/binary.hybrid.iso"
+rawimage_gecos_lite = "/var/gensys/live-build/gecosv5-lite/binary.hybrid.iso"
 ftpimage_gecos = "/var/gensys/deb-repositories/isos/gecos-desktop-64bits.iso"
 ftpimage_gecos_lite = "/var/gensys/deb-repositories/isos/gecos-lite-desktop-32bits.iso"
 

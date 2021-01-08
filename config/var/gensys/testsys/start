@@ -7,6 +7,6 @@ then
 fi
 
 buildbot start /var/gensys/testsys/gecosmaster
-cd /var/gensys/testsys/pkgbuilderbot; buildslave start; cd ..
-cd /var/gensys/testsys/gensysbot; buildslave start; cd ..
+cd /var/gensys/testsys/pkgbuilderbot; buildbot-worker start; cd ..
+cd /var/gensys/testsys/gensysbot; buildbot-worker start; cd ..
 

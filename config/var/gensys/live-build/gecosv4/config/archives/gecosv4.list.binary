@@ -1,9 +1,0 @@
-deb http://v4.gecos.guadalinex.org/ubuntu/   bionic             main restricted universe multiverse
-deb http://v4.gecos.guadalinex.org/ubuntu/   bionic-updates     main restricted universe multiverse
-deb http://v4.gecos.guadalinex.org/ubuntu/   bionic-security    main restricted universe multiverse
-deb http://v4.gecos.guadalinex.org/ubuntu/   bionic-backports   main restricted universe multiverse
-
-deb http://v4.gecos.guadalinex.org/mint/     tara               main upstream import backport
-
-deb http://v4.gecos.guadalinex.org/gecos/    v4                 main 
-

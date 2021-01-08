@@ -1,0 +1,11 @@
+RELEASE=20.04
+DISTRIB_ID=Ubuntu
+CODENAME=focal
+EDITION="Cinnamon 64-bit"
+DESCRIPTION="GECOS V5"
+DESKTOP=Cinnamon
+TOOLKIT=GTK
+NEW_FEATURES_URL=http://gecos-team.github.io/
+RELEASE_NOTES_URL=http://gecos-team.github.io/
+USER_GUIDE_URL=http://gecos-team.github.io/
+GRUB_TITLE=GECOS V5 64bits

@@ -1,0 +1,9 @@
+deb http://v5.gecos.guadalinex.org/ubuntu/   focal             main restricted universe multiverse
+deb http://v5.gecos.guadalinex.org/ubuntu/   focal-updates     main restricted universe multiverse
+deb http://v5.gecos.guadalinex.org/ubuntu/   focal-security    main restricted universe multiverse
+deb http://v5.gecos.guadalinex.org/ubuntu/   focal-backports   main restricted universe multiverse
+
+deb http://v5.gecos.guadalinex.org/mint/     ulyana            main upstream import backport
+
+deb http://v5.gecos.guadalinex.org/gecos/    v5                main 
+
