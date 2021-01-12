@@ -289,5 +289,13 @@ if [ "${LB_SWAP_FILE_PATH}" ]; then
 	mkswap "chroot/${LB_SWAP_FILE_PATH}"
 fi
 
+
+# GECOS hacks
+chmod 644 chroot/etc/hosts
+chmod 644 chroot/etc/apt/sources.list.d/*
+#sed -i '/guadalinex/d' chroot/etc/apt/sources.list
+chmod 755 chroot/var/lib/apt/lists
+
+
 # Creating stage file
 Create_stagefile .build/chroot_hacks

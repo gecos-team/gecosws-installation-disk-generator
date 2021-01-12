@@ -51,7 +51,7 @@ def drop_all_privileges():
     # gconf needs both the UID and effective UID set.
     global _dropped_privileges
     # DO NOT DROP PRIVILEGES!
-    #uid = os.environ.get('PKEXEC_UID')
+    uid = os.environ.get('PKEXEC_UID', os.environ.get('SUDO_UID'))
     uid = 0
     gid = None
     if uid is not None:
@@ -74,7 +74,7 @@ def drop_privileges():
     assert _dropped_privileges is not None
     if _dropped_privileges == 0:
         # DO NOT DROP PRIVILEGES!
-        #uid = os.environ.get('PKEXEC_UID')
+        uid = os.environ.get('PKEXEC_UID', os.environ.get('SUDO_UID'))
         uid = 0
         gid = None
         if uid is not None:
@@ -105,7 +105,7 @@ def drop_privileges_save():
     # privileges were already dropped.
     assert _dropped_privileges is not None and _dropped_privileges > 0
     # DO NOT DROP PRIVILEGES!
-    # uid = os.environ.get('PKEXEC_UID')
+    uid = os.environ.get('PKEXEC_UID', os.environ.get('SUDO_UID'))
     uid = 0
     gid = None
     if uid is not None:
@@ -122,9 +122,15 @@ def drop_privileges_save():
 def regain_privileges_save():
     """Recover our real UID/GID after calling drop_privileges_save."""
     assert _dropped_privileges is not None and _dropped_privileges > 0
+    # We need to call os.setresuid and os.setresgid twice to avoid
+    # permission issues when calling os.setgroups (see LP: #646827).
+    _, euid, _ = os.getresuid()
+    _, egid, _ = os.getresgid()
     os.setresuid(0, 0, 0)
     os.setresgid(0, 0, 0)
     os.setgroups([])
+    os.setresgid(-1, egid, -1)
+    os.setresuid(-1, euid, -1)
 
 
 @contextlib.contextmanager
@@ -155,7 +161,7 @@ def grub_options():
         @return empty list or a list of ['/dev/sda1','Ubuntu Hardy 8.04'] """
     from ubiquity.parted_server import PartedServer
 
-    l = []
+    ret = []
     try:
         oslist = {}
         subp = subprocess.Popen(
@@ -178,9 +184,9 @@ def grub_options():
             if dev and mod:
                 if size.isdigit():
                     size = format_size(int(size))
-                    l.append([dev, '%s (%s)' % (mod, size)])
+                    ret.append([dev, '%s (%s)' % (mod, size)])
                 else:
-                    l.append([dev, mod])
+                    ret.append([dev, mod])
             for part in p.partitions():
                 ostype = ''
                 if part[4] == 'linux-swap':
@@ -192,12 +198,12 @@ def grub_options():
                     pass
                 elif part[5] in oslist.keys():
                     ostype = oslist[part[5]]
-                l.append([part[5], ostype])
-    except:
+                ret.append([part[5], ostype])
+    except Exception:
         import traceback
         for line in traceback.format_exc().split('\n'):
             syslog.syslog(syslog.LOG_ERR, line)
-    return l
+    return ret
 
 
 @raise_privileges
@@ -312,6 +318,24 @@ def partition_to_disk(partition):
     return udevadm_disk.get('DEVNAME', partition)
 
 
+@raise_privileges
+def is_bitlocker_partition_encrypted(devpath):
+    """Check if partition is BitLocker encryption."""
+    subp = subprocess.Popen(
+        ['blkid', '--match-tag', 'TYPE', devpath],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        universal_newlines=True)
+    result = subp.communicate()[0].split()
+    if result:
+        for line in result:
+            if devpath in line:
+                continue
+            name, value = line.split('=', 1)
+            if 'TYPE' in name and 'BitLocker' in value[1:-1]:
+                return True
+    return False
+
+
 def is_boot_device_removable(boot=None):
     if boot:
         return is_removable(boot)
@@ -380,8 +404,13 @@ def grub_default(boot=None):
             else:
                 # Try the next disk along (which can't also be the CD source).
                 target = os.path.realpath(devices[1].split('\t')[1])
-            target = re.sub(r'(/dev/(cciss|ida)/c[0-9]d[0-9]|/dev/[a-z]+).*',
-                            r'\1', target)
+            # Match the more specific patterns first, then move on to the more
+            # generic /dev/[a-z]+.
+            target = re.sub(r'(\
+                            /dev/(cciss|ida)/c[0-9]d[0-9]|\
+                            /dev/nvme[0-9]+n[0-9]+|\
+                            /dev/[a-z]+\
+                            ).*', r'\1', target)
         except (IndexError, OSError):
             pass
 
@@ -415,7 +444,7 @@ def find_in_os_prober(device, with_version=False):
             return ret
     except (KeyboardInterrupt, SystemExit):
         pass
-    except:
+    except Exception:
         import traceback
         syslog.syslog(syslog.LOG_ERR, "Error in find_in_os_prober:")
         for line in traceback.format_exc().split('\n'):
@@ -442,7 +471,7 @@ def os_prober():
             if res[2] == 'Ubuntu':
                 version = [v for v in re.findall('[0-9.]*', res[1]) if v][0]
                 # Get rid of the superfluous (development version) (11.04)
-                text = re.sub('\s*\(.*\).*', '', res[1])
+                text = re.sub(r'\s*\(.*\).*', '', res[1])
                 _os_prober_oslist[res[0]] = text
                 _os_prober_osvers[res[0]] = version
             else:
@@ -491,13 +520,14 @@ def get_release():
                     line[0] = line[0].replace('-', ' ')
                     get_release.release_info = ReleaseInfo(
                         name=line[0], version=line[1])
-        except:
+        except Exception:
             syslog.syslog(syslog.LOG_ERR, 'Unable to determine the release.')
 
-        # DEFAULT TO GECOS V5
         if not get_release.release_info:
+             # DEFAULT TO GECOS V5
             get_release.release_info = ReleaseInfo(name='GECOS', version='V5')
     return get_release.release_info
+
 
 get_release.release_info = None
 
@@ -518,7 +548,7 @@ def get_release_name():
                         get_release_name.release_name = ' '.join(line[:3])
                     else:
                         get_release_name.release_name = ' '.join(line[:2])
-        except:
+        except Exception:
             syslog.syslog(
                 syslog.LOG_ERR,
                 "Unable to determine the distribution name from "
@@ -526,6 +556,7 @@ def get_release_name():
         if not get_release_name.release_name:
             get_release_name.release_name = 'Ubuntu'
     return get_release_name.release_name
+
 
 get_release_name.release_name = ''
 
@@ -538,11 +569,12 @@ def get_install_medium():
                 get_install_medium.medium = 'USB'
             else:
                 get_install_medium.medium = 'CD'
-        except:
+        except Exception:
             syslog.syslog(
                 syslog.LOG_ERR, "Unable to determine install medium.")
             get_install_medium.medium = 'CD'
     return get_install_medium.medium
+
 
 get_install_medium.medium = ''
 
@@ -640,7 +672,7 @@ def dmimodel():
             model = proc.communicate()[0]
         if 'apple' in manufacturer:
             # MacBook4,1 - strip the 4,1
-            model = re.sub('[^a-zA-Z\s]', '', model)
+            model = re.sub(r'[^a-zA-Z\s]', '', model)
         # Replace each gap of non-alphanumeric characters with a dash.
         # Ensure the resulting string does not begin or end with a dash.
         model = re.sub('[^a-zA-Z0-9]+', '-', model).rstrip('-').lstrip('-')
@@ -878,6 +910,12 @@ def install_size():
 
     return min_disk_size
 
+
 min_install_size = None
+
+
+def launch_uri(uri):
+    subprocess.Popen(['sensible-browser', uri], close_fds=True,
+                     preexec_fn=drop_all_privileges)
 
 # vim:ai:et:sts=4:tw=80:sw=4:
