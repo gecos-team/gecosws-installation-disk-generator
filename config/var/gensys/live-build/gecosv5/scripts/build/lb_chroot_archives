@@ -258,6 +258,10 @@ EOF
 			done
 		fi
 
+
+		# GECOS
+		Check_package /usr/bin/gpg gnupg
+
 		# FIX: https://d.sb/2016/11/gpg-inappropriate-ioctl-for-device-errors
 		rm -rf chroot/root/.gnupg
 		mkdir -p chroot/root/.gnupg

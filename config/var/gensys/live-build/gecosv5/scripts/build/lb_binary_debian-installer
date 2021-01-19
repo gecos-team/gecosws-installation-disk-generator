@@ -490,7 +490,10 @@ then
 
 		# Modify dpkg status to show the required packages are not installed.
 		cp chroot/var/lib/dpkg/status.tmp chroot/var/lib/dpkg/status
-		for PACKAGE in ${DI_REQ_PACKAGES}
+		# GECOS
+                MY_REQ_PACKAGES="${DI_REQ_PACKAGES} grub-efi grub-efi-amd64 grub-efi-ia32"
+                for PACKAGE in ${MY_REQ_PACKAGES}
+		#for PACKAGE in ${DI_REQ_PACKAGES}
 		do
 			awk -v f=0 '
 				f == 1 { print "Status: purge ok not-installed"; f=0; next }
@@ -508,6 +511,12 @@ then
 
 		# Download .debs of the required packages
 		Chroot chroot ${_LB_APT_COMMAND} install ${DI_PACKAGES} ${DI_FIRMWARE_PACKAGES} ${DI_REQ_PACKAGES}
+
+                # GECOS: Descargo tambien el Grub para UEFI
+                Chroot chroot ${_LB_APT_COMMAND} install grub-efi
+                Chroot chroot ${_LB_APT_COMMAND} install grub-efi-amd64
+                Chroot chroot ${_LB_APT_COMMAND} install grub-efi-ia32
+
 	else
 		# Download .debs of the required packages
 		Chroot chroot ${_LB_APT_COMMAND} install ${DI_PACKAGES} ${DI_FIRMWARE_PACKAGES}

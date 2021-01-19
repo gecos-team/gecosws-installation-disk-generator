@@ -1,4 +1,31 @@
+# Do NOT install firefox from Linux Mint repositories
 Package: firefox
-Pin: release n=v5
-Pin-Priority: 900
+Pin: release n=ulyana
+Pin-Priority: -1
+
+# Do NOT install firefox from Ubuntu repositories
+Package: firefox
+Pin: release n=focal
+Pin-Priority: -1
+
+Package: firefox
+Pin: release n=focal-updates
+Pin-Priority: -1
+
+Package: firefox
+Pin: release n=focal-security
+Pin-Priority: -1
+
+# Do NOT install chef from Ubuntu repositories
+Package: chef
+Pin: release n=focal
+Pin-Priority: -1
+
+Package: chef
+Pin: release n=focal-updates
+Pin-Priority: -1
+
+Package: chef
+Pin: release n=focal-security
+Pin-Priority: -1
 

@@ -1,0 +1,12 @@
+NAME="GECOS V5"
+VERSION="20.04"
+ID=ubuntu
+ID_LIKE=ubuntu
+PRETTY_NAME="GECOS V5"
+VERSION_ID="20.04"
+HOME_URL="https://github.com/gecos-team/"
+SUPPORT_URL="https://github.com/gecos-team/gecosws-installation-disk"
+BUG_REPORT_URL="https://github.com/gecos-team/gecosws-installation-disk"
+PRIVACY_POLICY_URL="https://github.com/gecos-team/gecosws-installation-disk"
+VERSION_CODENAME=focal
+UBUNTU_CODENAME=focal

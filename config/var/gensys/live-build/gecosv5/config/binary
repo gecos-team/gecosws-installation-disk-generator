@@ -29,8 +29,8 @@ LB_BOOTAPPEND_FAILSAFE="memtest noapic noapm nodma nomce nolapic nomodeset nosmp
 LB_BOOTLOADER="syslinux"
 
 # $LB_CHECKSUMS: set checksums
-# (Default: none)
-LB_CHECKSUMS="none"
+# (Default: md5)
+LB_CHECKSUMS="md5"
 
 # $LB_COMPRESSION: set compression
 # (Default: gzip)

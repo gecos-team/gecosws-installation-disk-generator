@@ -1755,6 +1755,19 @@ class Install(install_misc.InstallBase):
         misc.execute('chroot', self.target, 'apt', 'remove', 'ubiquity', '--yes', '--purge')
         misc.execute('chroot', self.target, 'apt', 'autoremove', '--yes')
 
+        # AMP: remove i386 architecture
+        misc.execute('chroot', self.target, 'dpkg', '--remove-architecture', 'i386')
+
+        # AMP: Fix permissions
+        misc.execute('chmod', '755', self.target + '/var/lib/apt/lists')
+        misc.execute('chmod', '755', self.target + '/var/cache/apt')
+        misc.execute('chmod', '755', self.target + '/var/cache/apt/archives')
+        misc.execute('chmod', '755', self.target + '/var/cache/apt/archives/partial')
+        misc.execute('chmod', '644', self.target + '/etc/apt/apt.conf.d/00recomends')
+        misc.execute('chmod', '644', self.target + '/etc/apt/sources.list.d/gecosv5.list')
+        misc.execute('chmod', '644', self.target + '/etc/apt/preferences')
+
+
         # AMP: patch resolv.conf in target environment
         misc.execute('mv', self.target + '/etc/resolv.conf', self.target + '/etc/resolv.conf.orig')
         misc.execute('cp', '/etc/resolv.conf', self.target + '/etc/resolv.conf')
