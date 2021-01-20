@@ -17,6 +17,4 @@ esac
 
 if grep -q integrity-check /proc/cmdline; then
 	casper-md5check /cdrom /cdrom/MD5SUMS < /dev/tty1 > /dev/tty1
-	reboot
-	while :; do sleep 60; done
 fi

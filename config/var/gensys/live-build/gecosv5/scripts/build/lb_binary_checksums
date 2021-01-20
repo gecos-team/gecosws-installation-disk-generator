@@ -55,7 +55,10 @@ do
 
 	# Calculating checksums
 	cd binary
+        # GECOS: Ignore boot.cat and pcmcia-storage-modules (filename too long)
 	find . -type f \
+                \! -path './pool/main/l/linux/pcmcia-storage-modules-*' \
+                \! -path './isolinux/boot.cat' \
 		\! -path './isolinux/isolinux.bin' \
 		\! -path './boot/boot.bin' \
 		\! -path './boot/grub/stage2_eltorito' \
