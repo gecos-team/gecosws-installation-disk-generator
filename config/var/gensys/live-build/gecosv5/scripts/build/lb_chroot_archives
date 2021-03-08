@@ -907,6 +907,10 @@ EOF
 			apt-key del ${_LB_LOCAL_KEY_EMAIL}
 		fi
 
+                # GECOS: Clear sources.list file
+                echo "# Sources in sources.list.d" > chroot/etc/apt/sources.list
+
+
 		# Removing stage file
 		rm -f .build/chroot_archives
 		;;

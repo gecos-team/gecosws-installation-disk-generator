@@ -293,7 +293,14 @@ fi
 # GECOS hacks
 chmod 644 chroot/etc/hosts
 chmod 644 chroot/etc/apt/sources.list.d/*
-#sed -i '/guadalinex/d' chroot/etc/apt/sources.list
+if [ -f chroot/etc/apt/sources.list.d/gecosv5.list ]
+then
+	echo "# Sources in sources.list.d" > chroot/etc/apt/sources.list
+fi
+if [ -f chroot/etc/apt/sources.list.d/zz-sources.list ]
+then
+        echo "# Sources in sources.list.d" > chroot/etc/apt/sources.list.d/zz-sources.list
+fi
 chmod 755 chroot/var/lib/apt/lists
 
 
