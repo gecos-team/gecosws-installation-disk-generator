@@ -54,6 +54,10 @@ metapkgs = [
      "gecosws-ubiquity",
 ]
 
+appimgs = {
+        "gecoshc-client" : "helpchannel-1.2.1-x86_64.AppImage"
+}
+
 apps = [
 
 ]
@@ -63,6 +67,17 @@ halt_on_lintian_error = False
 # Script live-build
 livebuild_gecos = "sudo /var/gensys/live-build/gecosv5/buildgecos.sh"
 livebuild_gecos_lite = "sudo /var/gensys/live-build/gecosv5-lite/buildgecoslite.sh"
+
+# Script to build AppImages
+# (Install appimage-builder by executing the following commands:
+#
+#   virtualenv appimage-builder
+#   source  appimage-builder/bin/activate
+#   pip3 install appimage-builder
+#
+# It needs to be in a separate virtual environment because there is a
+# conflict with python3-yaml version.
+appimage_builder = "/var/gensys/appimage-builder/bin/appimage-builder"
 
 # Codename of repository
 
@@ -78,6 +93,7 @@ rawimage_gecos = "/var/gensys/live-build/gecosv5/binary.hybrid.iso"
 rawimage_gecos_lite = "/var/gensys/live-build/gecosv5-lite/binary.hybrid.iso"
 ftpimage_gecos = "/var/gensys/deb-repositories/isos/gecos-desktop-64bits.iso"
 ftpimage_gecos_lite = "/var/gensys/deb-repositories/isos/gecos-lite-desktop-32bits.iso"
+ftpimage_appimgs = "/var/gensys/deb-repositories/appimgs"
 
 
 gensys_gecos_time = "04:00"

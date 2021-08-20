@@ -6,7 +6,8 @@ from buildbot.status.builder import SUCCESS, FAILURE, WARNINGS
 import subprocess
 import distroconf
 from distroconf import halt_on_lintian_error
-from distroconf import livebuild_gecos, livebuild_gecos_lite, pdebuild, codename_gecos
+from distroconf import livebuild_gecos, livebuild_gecos_lite, pdebuild, \
+    codename_gecos, appimage_builder
 
 class RemoveGIT(ShellCommand):
     """ Removes the .svn directories recursively"""
@@ -221,6 +222,31 @@ class LiveBuildGecosLite(ShellCommand):
 
         return SUCCESS
 
+
+class AppImageBuilder(ShellCommand):
+    name = "appimage-builder"
+    command = appimage_builder
+    description = [name]
+
+    def __init__(self, **kwargs):
+        ShellCommand.__init__(self, **kwargs)
+
+    def createSummary(self, log):
+        for line in log.readlines():
+            if line.strip().startswith("Error:"):
+                self.error_log = line
+
+    def evaluateCommand(self, cmd):
+        self.descriptionDone = [self.name]
+
+        if cmd.rc == 255:
+                self.descriptionDone.append(self.error_log)
+                return FAILURE
+
+        if cmd.rc != 0:
+                return FAILURE
+
+        return SUCCESS
 
 class SetGitRevGecos(ShellCommand):
     """
